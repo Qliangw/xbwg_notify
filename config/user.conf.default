@@ -1,6 +1,6 @@
 # --服务器配置
 export API_KEY=""
-
+export V_EID=""
 # --企业微信通知配置
 export CORPID=""
 export CORP_SECRET=""

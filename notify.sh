@@ -11,5 +11,8 @@ echo "导入用户配置"
 # 导入获取服务器脚本
 source "${CODE_ROOT_DIR}/scripts/get_info.sh"
 
+
+bash ${CODE_ROOT_DIR}/scripts/push.sh ${msg} ${msg}
+
 #cd ${CODE_ROOT_DIR}
 exit 0
