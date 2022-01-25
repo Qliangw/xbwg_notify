@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# 载入用户配置
-
-# 发送请求（使用用企业微信接口）
+SC_ROOT_DIR=$(cd `dirname $0`; pwd)
+cd $SC_ROOT_DIR
+source ../config/user.conf
 
 # get key
-RET=$(curl -s https://qyapi.weixin.qq.com/cgi-bin/gettoken?"corpid=$corpid&corpsecret=$corpsecret")
+RET=$(curl -s https://qyapi.weixin.qq.com/cgi-bin/gettoken?"corpid=$CORPID&corpsecret=$CORP_SECRET")
 KEY=$(echo ${RET} | jq -r .access_token)
 
 cat>./tmp<<EOF
