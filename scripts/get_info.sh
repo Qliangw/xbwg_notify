@@ -14,10 +14,11 @@ DIFF_SEC=$((CUR_SEC-TODAY_SEC))
 
 # 获取信息
 function get_msg(){
-    USAGE=$(curl -s https://api.64clouds.com/v1/getLiveServiceInfo?"veid=${V_EID}&api_key=${API_KEY}"|jq -r .data_counter)
-    TOTAL=$(curl -s https://api.64clouds.com/v1/getLiveServiceInfo?"veid=${V_EID}&api_key=${API_KEY}"|jq -r .plan_monthly_data)
+	ALL_MSG=$(curl -s https://api.64clouds.com/v1/getLiveServiceInfo?"veid=${V_EID}&api_key=${API_KEY}")
+    USAGE=$(echo $ALL_MSG |jq -r .data_counter)
+    TOTAL=$(echo $ALL_MSG|jq -r .plan_monthly_data)
     LEFT=$((TOTAL - USAGE))
-    RESET_DATE=$(curl -s https://api.64clouds.com/v1/getLiveServiceInfo?"veid=${V_EID}&api_key=${API_KEY}"|jq -r .data_next_reset)
+    RESET_DATE=$(echo $ALL_MSG|jq -r .data_next_reset)
 }
 
 # 整理有用信息
