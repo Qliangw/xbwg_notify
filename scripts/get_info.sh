@@ -30,8 +30,8 @@ function org_msg(){
 	LEFT_RATIO=$(echo "scale=4;(${LEFT} / ${TOTAL}) * 100" |bc |awk '{printf "%.2f",$0}')
 	echo "RESET_DATE:"${RESET_DATE}
 
-	if [ -f ./config/OLD_USAGE.txt ];then
-	    OLD_USAGE=$(cat ./config/OLD_USAGE.txt)
+	if [ -f ./config/old_usage.txt ];then
+	    OLD_USAGE=$(cat ./config/old_usage.txt)
 	fi
 
 	if [[ ${CUR_DATE} -ge ${RESET_DATE} ]];then
@@ -52,7 +52,7 @@ function org_msg(){
 	echo ${msg}
 
 	if [ $DIFF_SEC -lt 60 ];then
-	    echo $USAGE>../config/old_usage.txt
+	    echo $USAGE>./config/old_usage.txt
 	fi
 }
 
