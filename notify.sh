@@ -4,19 +4,17 @@ VER_X="0.1.1"
 UP_X="2022-02-24"
 
 
-function sh_init()
-{
-	#获取脚本根目录
-	CODE_ROOT_DIR=$(cd `dirname $0`; pwd)
-	echo "获取脚本根目录："${CODE_ROOT_DIR}
+#获取脚本根目录
+CODE_ROOT_DIR=$(cd `dirname $0`; pwd)
+echo "获取脚本根目录："${CODE_ROOT_DIR}
 
-	# 导入用户配置
-	source "${CODE_ROOT_DIR}/config/user.conf"
-	echo "导入用户配置"
+# 导入用户配置
+source "${CODE_ROOT_DIR}/config/user.conf"
+echo "导入用户配置 : $MEDIA_ID"
 
-	# 导入获取服务器脚本
-	source "${CODE_ROOT_DIR}/scripts/get_info.sh"
-}
+# 导入获取服务器脚本
+source "${CODE_ROOT_DIR}/scripts/get_info.sh"
+
 
 function run_notify()
 {
@@ -43,7 +41,7 @@ version()
 if [[ "$1" == "-v" || "$1" == "--version" ]]; then
 	version
 elif [[ "$1" == "-r" || "$1" == "--run" ]]; then
-	sh_init
+	# sh_init
 	run_notify
 elif [[ "$1" == "-h" || "$1" == "--help" ]]; then
 	sh_help
