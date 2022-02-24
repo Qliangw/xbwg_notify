@@ -1,4 +1,4 @@
-#!/bin/bash
+
 DIVISOR="1073741824"
 OLD_USAGE="0"
 CUR_DATE=$(date +'%s')
@@ -8,6 +8,9 @@ TODAY_SEC=$(date -d "${TODAY_DAY}" +'%s')
 CUR_SEC=$(date +'%s')
 DIFF_SEC=$((CUR_SEC-TODAY_SEC))
 
+SC_ROOT_DIR=$(cd `dirname $0`; pwd)
+
+
 # 判断环境时候有安装jq和bc工具
 
 # 安装工具
@@ -15,10 +18,10 @@ DIFF_SEC=$((CUR_SEC-TODAY_SEC))
 # 获取信息
 function get_msg(){
 	ALL_MSG=$(curl -s https://api.64clouds.com/v1/getLiveServiceInfo?"veid=${V_EID}&api_key=${API_KEY}")
-    USAGE=$(echo $ALL_MSG |jq -r .data_counter)
-    TOTAL=$(echo $ALL_MSG|jq -r .plan_monthly_data)
-    LEFT=$((TOTAL - USAGE))
-    RESET_DATE=$(echo $ALL_MSG|jq -r .data_next_reset)
+	USAGE=$(echo $ALL_MSG |jq -r .data_counter)
+	TOTAL=$(echo $ALL_MSG|jq -r .plan_monthly_data)
+	LEFT=$((TOTAL - USAGE))
+	RESET_DATE=$(echo $ALL_MSG|jq -r .data_next_reset)
 }
 
 # 整理有用信息
@@ -31,8 +34,8 @@ function org_msg(){
 	LEFT_RATIO=$(echo "scale=4;(${LEFT} / ${TOTAL}) * 100" |bc |awk '{printf "%.2f",$0}')
 	echo "RESET_DATE:"${RESET_DATE}
 
-	if [ -f ./config/old_usage.txt ];then
-	    OLD_USAGE=$(cat ./config/old_usage.txt)
+	if [ -f "${SC_ROOT_DIR}"/config/old_usage.txt ];then
+		OLD_USAGE=$(cat "${SC_ROOT_DIR}"/config/old_usage.txt)
 	fi
 
 	if [[ ${CUR_DATE} -ge ${RESET_DATE} ]];then
@@ -43,7 +46,7 @@ function org_msg(){
 
 	if [ $DIFF \< 0 ];then
 	    DIFF=$USAGE
-	    echo $USAGE>./config/old_usage.txt
+	    echo $USAGE>"${SC_ROOT_DIR}"/config/old_usage.txt
 	fi
 
 	#msg=`echo "BWHServer\n总共流量:${TOTAL}G\n已用流量:${USAGE}G|${USAGE_RATIO}%\n剩余流量:${LEFT}G|${LEFT_RATIO}%\n当日流量:${DIFF}G\n剩余天数:${LEFT_DATE}天"`
@@ -53,7 +56,7 @@ function org_msg(){
 	echo ${msg}
 
 	if [ $DIFF_SEC -lt 60 ];then
-	    echo $USAGE>./config/old_usage.txt
+	    echo $USAGE>"${SC_ROOT_DIR}"/config/old_usage.txt
 	fi
 }
 
