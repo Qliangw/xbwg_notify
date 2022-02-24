@@ -1,4 +1,3 @@
-
 DIVISOR="1073741824"
 OLD_USAGE="0"
 CUR_DATE=$(date +'%s')
@@ -33,28 +32,20 @@ function org_msg(){
 	USAGE_RATIO=$(echo "scale=4;(${USAGE} / ${TOTAL} ) * 100" |bc | awk '{printf "%.2f",$0}')
 	LEFT_RATIO=$(echo "scale=4;(${LEFT} / ${TOTAL}) * 100" |bc |awk '{printf "%.2f",$0}')
 	echo "RESET_DATE:"${RESET_DATE}
-
 	if [ -f "${SC_ROOT_DIR}"/config/old_usage.txt ];then
 		OLD_USAGE=$(cat "${SC_ROOT_DIR}"/config/old_usage.txt)
 	fi
-
 	if [[ ${CUR_DATE} -ge ${RESET_DATE} ]];then
 	    OLD_USAGE=0
 	fi
-
 	DIFF=$(echo "$USAGE - $OLD_USAGE" | bc | awk '{printf "%.2f", $0}')
-
 	if [ $DIFF \< 0 ];then
 	    DIFF=$USAGE
 	    echo $USAGE>"${SC_ROOT_DIR}"/config/old_usage.txt
 	fi
-
 	#msg=`echo "BWHServer\n总共流量:${TOTAL}G\n已用流量:${USAGE}G|${USAGE_RATIO}%\n剩余流量:${LEFT}G|${LEFT_RATIO}%\n当日流量:${DIFF}G\n剩余天数:${LEFT_DATE}天"`
-
 	msg=$(echo "当日流量:${DIFF}G\n已用流量:${USAGE}G|${USAGE_RATIO}%\n剩余流量:${LEFT}G|${LEFT_RATIO}%\n剩余天数:${LEFT_DATE}天\n总共流量:${TOTAL}G\n")
-	#des=$(sed -i "/s/\n/<br\/>/g" "${msg}")
-	echo ${msg}
-
+	des="$(echo "${msg}" | sed 's/\\n/\<br\/\>/g')"
 	if [ $DIFF_SEC -lt 60 ];then
 	    echo $USAGE>"${SC_ROOT_DIR}"/config/old_usage.txt
 	fi
