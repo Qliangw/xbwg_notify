@@ -1,20 +1,12 @@
 #!/bin/bash
-
 VER_X="0.1.1"
 UP_X="2022-02-24"
-
 
 #获取脚本根目录
 CODE_ROOT_DIR=$(cd `dirname $0`; pwd)
 echo "获取脚本根目录："${CODE_ROOT_DIR}
-
-# 导入用户配置
 source "${CODE_ROOT_DIR}/config/user.conf"
-echo "导入用户配置 : $MEDIA_ID"
-
-# 导入获取服务器脚本
 source "${CODE_ROOT_DIR}/scripts/get_info.sh"
-
 
 function run_notify()
 {
